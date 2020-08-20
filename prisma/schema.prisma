@@ -67,7 +67,8 @@ model listings_components {
   field          String
   order          Int
   component_type String
-  component_id   Int
+  component_id   Int?
+  location       components_location_geo_coordinates? @relation(fields: [component_id], references: [id])
   listing_id     Int
   listings       listings @relation(fields: [listing_id], references: [id])
 }
