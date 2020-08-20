@@ -4,10 +4,8 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Retrieve all published posts
-  const allPosts = await prisma.users_permissions_user.findMany({
-    where: { published: true },
-  });
-  console.log(`Retrieved all published posts: `, allPosts);
+  const allUsers = await prisma.users.findMany({});
+  console.log(`Retrieved all published posts: `, allUsers);
 }
 
 main()
@@ -16,5 +14,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.disconnect();
+    await prisma.$disconnect();
   });

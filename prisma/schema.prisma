@@ -194,7 +194,7 @@ model users_permissions_role {
   @@map("users-permissions_role")
 }
 
-model users_permissions_user {
+model users {
   id                 Int       @default(autoincrement()) @id
   username           String    @unique
   email              String
