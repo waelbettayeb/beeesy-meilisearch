@@ -78,7 +78,6 @@ async function main() {
   });
   console.log(`Retrieved all listings: `, allListing);
   const peopleIndex = await client.getOrCreateIndex("people");
-
   peopleIndex.addDocuments(allUsers as any);
   peopleIndex.resetSearchableAttributes();
   peopleIndex.updateSearchableAttributes([
@@ -92,6 +91,7 @@ async function main() {
 
   listingsIndex.addDocuments(allListing as any);
   listingsIndex.resetSearchableAttributes();
+  listingsIndex.updateStopWords(["id", "email", "firstName", "lastName"]);
   listingsIndex.updateSearchableAttributes([
     "title",
     "description",
