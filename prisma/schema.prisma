@@ -1,0 +1,218 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model blog_posts {
+  id         Int       @default(autoincrement()) @id
+  title      String
+  content    String?
+  created_by Int?
+  updated_by Int?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+}
+
+model blog_posts_tags__tags_blog_posts {
+  id           Int  @default(autoincrement()) @id
+  blog_post_id Int? @map("blog-post_id")
+  tag_id       Int?
+}
+
+model components_location_geo_coordinates {
+  id        Int    @default(autoincrement()) @id
+  longitude Float?
+  latitude  Float?
+}
+
+model core_store {
+  id          Int     @default(autoincrement()) @id
+  key         String?
+  value       String?
+  type        String?
+  environment String?
+  tag         String?
+}
+
+model infos {
+  id         Int       @default(autoincrement()) @id
+  Name       String
+  created_by Int?
+  updated_by Int?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+}
+
+model listings {
+  id                  Int                   @default(autoincrement()) @id
+  title               String
+  description         String?
+  isPublished         Boolean?
+  user                Int?
+  created_by          Int?
+  updated_by          Int?
+  created_at          DateTime?             @default(now())
+  updated_at          DateTime?             @default(now())
+  listings_components listings_components[]
+}
+
+model listings_components {
+  id             Int      @default(autoincrement()) @id
+  field          String
+  order          Int
+  component_type String
+  component_id   Int
+  listing_id     Int
+  listings       listings @relation(fields: [listing_id], references: [id])
+}
+
+model phone_numbers {
+  id         Int       @default(autoincrement()) @id
+  countryId  String
+  number     String
+  user       Int?
+  created_by Int?
+  updated_by Int?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+}
+
+model strapi_administrator {
+  id                 Int      @default(autoincrement()) @id
+  firstname          String?
+  lastname           String?
+  username           String?
+  email              String   @unique
+  password           String?
+  resetPasswordToken String?
+  registrationToken  String?
+  isActive           Boolean?
+  blocked            Boolean?
+}
+
+model strapi_permission {
+  id         Int       @default(autoincrement()) @id
+  action     String
+  subject    String?
+  fields     Json?
+  conditions Json?
+  role       Int?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+}
+
+model strapi_role {
+  id          Int       @default(autoincrement()) @id
+  name        String    @unique
+  code        String    @unique
+  description String?
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @default(now())
+}
+
+model strapi_users_roles {
+  id      Int  @default(autoincrement()) @id
+  user_id Int?
+  role_id Int?
+}
+
+model strapi_webhooks {
+  id      Int      @default(autoincrement()) @id
+  name    String?
+  url     String?
+  headers Json?
+  events  Json?
+  enabled Boolean?
+}
+
+model tags {
+  id         Int       @default(autoincrement()) @id
+  name       String?   @unique
+  created_by Int?
+  updated_by Int?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+}
+
+model upload_file {
+  id                Int       @default(autoincrement()) @id
+  name              String
+  alternativeText   String?
+  caption           String?
+  width             Int?
+  height            Int?
+  formats           Json?
+  hash              String
+  ext               String?
+  mime              String
+  size              Float
+  url               String
+  previewUrl        String?
+  provider          String
+  provider_metadata Json?
+  created_by        Int?
+  updated_by        Int?
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @default(now())
+}
+
+model upload_file_morph {
+  id             Int     @default(autoincrement()) @id
+  upload_file_id Int?
+  related_id     Int?
+  related_type   String?
+  field          String?
+  order          Int?
+}
+
+model users_permissions_permission {
+  id         Int     @default(autoincrement()) @id
+  type       String
+  controller String
+  action     String
+  enabled    Boolean
+  policy     String?
+  role       Int?
+  created_by Int?
+  updated_by Int?
+
+  @@map("users-permissions_permission")
+}
+
+model users_permissions_role {
+  id          Int     @default(autoincrement()) @id
+  name        String
+  description String?
+  type        String? @unique
+  created_by  Int?
+  updated_by  Int?
+
+  @@map("users-permissions_role")
+}
+
+model users_permissions_user {
+  id                 Int       @default(autoincrement()) @id
+  username           String    @unique
+  email              String
+  provider           String?
+  password           String?
+  resetPasswordToken String?
+  confirmed          Boolean?
+  blocked            Boolean?
+  role               Int?
+  firstName          String?
+  lastName           String?
+  dateOfBirth        DateTime?
+  gender             String?
+  bio                String?
+  created_by         Int?
+  updated_by         Int?
+  created_at         DateTime? @default(now())
+  updated_at         DateTime? @default(now())
+
+  @@map("users-permissions_user")
+}
