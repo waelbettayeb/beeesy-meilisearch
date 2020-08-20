@@ -1,0 +1,11 @@
+version: "3"
+services:
+  meili:
+    container_name: "meili"
+    image: getmeili/meilisearch
+    ports:
+      - "7700:7700"
+    volumes:
+      - ./data.ms:/data.ms
+    # environment:
+    #   - MEILI_MASTER_KEY=

@@ -58,6 +58,7 @@ model listings {
   created_at          DateTime?             @default(now())
   updated_at          DateTime?             @default(now())
   listings_components listings_components[]
+  images              upload_file_morph[]
 }
 
 model listings_components {
@@ -164,6 +165,9 @@ model upload_file_morph {
   id             Int     @default(autoincrement()) @id
   upload_file_id Int?
   related_id     Int?
+  users          users?  @relation(fields: [related_id], references: [id])
+  listings          listings?  @relation(fields: [related_id], references: [id])
+  file           upload_file?  @relation(fields: [upload_file_id], references: [id])
   related_type   String?
   field          String?
   order          Int?
@@ -199,8 +203,6 @@ model users {
   username           String    @unique
   email              String
   provider           String?
-  password           String?
-  resetPasswordToken String?
   confirmed          Boolean?
   blocked            Boolean?
   role               Int?
@@ -209,10 +211,6 @@ model users {
   dateOfBirth        DateTime?
   gender             String?
   bio                String?
-  created_by         Int?
-  updated_by         Int?
-  created_at         DateTime? @default(now())
-  updated_at         DateTime? @default(now())
-
+  avatar             upload_file_morph[]
   @@map("users-permissions_user")
 }
