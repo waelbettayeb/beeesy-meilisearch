@@ -76,7 +76,14 @@ async function main() {
       isPublished: true,
     },
   });
-  console.log(`Retrieved all listings: `, allListing);
+  const listings = allListing.map((r) => {
+    const { listings_components, ...rest } = {
+      ...r,
+      ...r.listings_components[0]?.location,
+    };
+    return rest;
+  });
+  console.log(`Retrieved all listings: `, listings);
   const peopleIndex = await client.getOrCreateIndex("people");
   peopleIndex.addDocuments(allUsers as any);
   peopleIndex.resetSearchableAttributes();
@@ -88,8 +95,7 @@ async function main() {
     "gender",
   ]);
   const listingsIndex = await client.getOrCreateIndex("listings");
-
-  listingsIndex.addDocuments(allListing as any);
+  listingsIndex.addDocuments(listings as any);
   listingsIndex.resetSearchableAttributes();
   listingsIndex.updateStopWords(["id", "email", "firstName", "lastName"]);
   listingsIndex.updateSearchableAttributes([
