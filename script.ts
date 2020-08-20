@@ -21,6 +21,7 @@ async function main() {
 
   const allListing = await prisma.listings.findMany({
     include: {
+      owner: true,
       images: {
         include: {
           file: true,

@@ -53,6 +53,7 @@ model listings {
   description         String?
   isPublished         Boolean?
   user                Int?
+  owner               users? @relation(fields: [user], references: [id])
   created_by          Int?
   updated_by          Int?
   created_at          DateTime?             @default(now())
