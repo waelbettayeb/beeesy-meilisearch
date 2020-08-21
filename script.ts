@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import MeiliSearch from "meilisearch";
 var schedule = require("node-schedule");
 var prisma: PrismaClient;
+console.log("Data fetcher started!");
 
 async function main() {
   prisma = new PrismaClient();
@@ -109,12 +110,15 @@ async function main() {
 }
 
 var j = schedule.scheduleJob("* * * * *", function () {
-  console.log("The answer to life, the universe, and everything!");
+  console.log("----------------------------");
+  console.log("Scheduled fetching started!");
   main()
     .catch((e) => {
       console.error(e);
     })
     .finally(async () => {
+      console.log("Scheduled fetching Finished!");
+      console.log("----------------------------");
       await prisma.$disconnect();
     });
 });
