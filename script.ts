@@ -1,12 +1,19 @@
 import { PrismaClient } from "@prisma/client";
 import MeiliSearch from "meilisearch";
+import * as dotenv from "dotenv";
+dotenv.config();
+
 var schedule = require("node-schedule");
 var prisma: PrismaClient;
 console.log("Data fetcher started!");
 
 async function main() {
   prisma = new PrismaClient();
-  const client = new MeiliSearch({ host: "http://127.0.0.1:7700" });
+  const client = new MeiliSearch({
+    host: `${process.env.SEARCH_ENDPOINT}`,
+    apiKey: `${process.env.SEARCH_KEY}`,
+  });
+  client.getKeys();
   // Retrieve all users
   const allUsers = await prisma.users.findMany({
     select: {
