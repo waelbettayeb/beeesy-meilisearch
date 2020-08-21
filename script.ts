@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import MeiliSearch from "meilisearch";
-
-const prisma = new PrismaClient();
-const client = new MeiliSearch({ host: "http://127.0.0.1:7700" });
+var schedule = require("node-schedule");
+var prisma: PrismaClient;
 
 async function main() {
+  prisma = new PrismaClient();
+  const client = new MeiliSearch({ host: "http://127.0.0.1:7700" });
   // Retrieve all users
   const allUsers = await prisma.users.findMany({
     select: {
@@ -107,11 +108,13 @@ async function main() {
   ]);
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+var j = schedule.scheduleJob("* * * * *", function () {
+  console.log("The answer to life, the universe, and everything!");
+  main()
+    .catch((e) => {
+      console.error(e);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+});
