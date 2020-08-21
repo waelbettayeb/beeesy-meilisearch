@@ -6,6 +6,7 @@ dotenv.config();
 var schedule = require("node-schedule");
 var prisma: PrismaClient;
 console.log("Data fetcher started!");
+console.log(`MeiliSearch endpoint: ${process.env.SEARCH_ENDPOINT}`);
 
 async function main() {
   prisma = new PrismaClient();
