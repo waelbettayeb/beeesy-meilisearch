@@ -94,6 +94,8 @@ async function main() {
     return rest;
   });
   console.log(`Retrieved all listings: `, listings);
+  // await (await client.getOrCreateIndex("people")).deleteAllDocuments();
+  // await (await client.getOrCreateIndex("listings")).deleteAllDocuments();
   const peopleIndex = await client.getOrCreateIndex("people");
   peopleIndex.addDocuments(allUsers as any);
   peopleIndex.resetSearchableAttributes();
